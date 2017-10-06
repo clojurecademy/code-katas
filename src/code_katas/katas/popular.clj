@@ -149,7 +149,73 @@
                                                         (code (= (prime-factors 60) [2 2 3 5])))
 
                                                       (testing
-                                                        (is (= (prime-factors 60) [2 2 3 5]) :default :advanced)))))))
+                                                        (is (= (prime-factors 60) [2 2 3 5]) :default :advanced)))))
+
+
+               (subject 'subj-bowling-game
+                        "Bowling Game"
+
+                        (learn
+                          (text
+                            (p "The game consists of 10 frames. In each frame the player has two opportunities to knock down 10 pins. The score for the frame is the total number of pins knocked down, plus bonuses for strikes and spares.")
+
+                            (p "A spare is when the player knocks down all 10 pins in two tries. The bonus for that frame is the number of pins knocked down by the next roll. ‘/’ denote a spare in the score sheet. A strike is when the player knocks down all 10 pins on his first try. The bonus for that frame is the value of the next two balls rolled. ‘X’ denote a striker in the score sheet.")
+
+                            (p "In the tenth frame a player who rolls a spare or strike is allowed to roll the extra balls to complete the frame (so 3 balls can be rolled in tenth frame).")))
+
+                        (instruction 'ins-bowling-game
+                                     (run-pre-tests? true)
+                                     (initial-code "(ns bowling-game-kata)\n\n\n(defn score\n  [game]\n  )")
+                                     (rule :no-rule? true)
+
+                                     (sub-instruction 'sub-ins-a-gutter-game
+                                                      (text (p "It scores a gutter game")
+                                                            (code (= (score [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 0)))
+
+                                                      (testing
+                                                        (is (= (score [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 0) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-an-all-ones-game
+                                                      (text (p "It scores an all ones game")
+                                                            (code (= (score [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]) 20)))
+
+                                                      (testing
+                                                        (is (= (score [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]) 20) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-a-game-starting-with-a-spare
+                                                      (text (p "It scores a game starting with a spare")
+                                                            (code (= (score [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 16)))
+
+                                                      (testing
+                                                        (is (= (score [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 16) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-a-game-starting-with-a-strike
+                                                      (text (p "It scores a game starting with a strike")
+                                                            (code (= (score [10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 24)))
+
+                                                      (testing
+                                                        (is (= (score [10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 24) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-a-perfect-game
+                                                      (text (p "It scores a perfect game")
+                                                            (code (= (score [10 10 10 10 10 10 10 10 10 10 10 10]) 300)))
+
+                                                      (testing
+                                                        (is (= (score [10 10 10 10 10 10 10 10 10 10 10 10]) 300) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-an-all-spares-game
+                                                      (text (p "It scores an all spares game")
+                                                            (code (= (score [5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 10]) 155)))
+
+                                                      (testing
+                                                        (is (= (score [5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 10]) 155) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-an-game-with-a-strike
+                                                      (text (p "It scores a game with a strike")
+                                                            (code (= (score [0 0 10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 24)))
+
+                                                      (testing
+                                                        (is (= (score [0 0 10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0]) 24) :default :advanced)))))))
 
 
 (defcoursetest my-test-1
@@ -280,4 +346,101 @@
 
                (defn prime-factors [x]
                  (generate-with-candidate x 2)))
+
+
+;;mock solution!
+(defcoursetest my-test-13
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-a-gutter-game]
+               (defn score [rolls]
+                 0))
+
+
+(defcoursetest my-test-14
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-an-all-ones-game]
+               (defn score [rolls]
+                 (cond
+                   (= rolls [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   0
+                   :else
+                   20)))
+
+
+(defcoursetest my-test-15
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-a-game-starting-with-a-spare]
+               (defn score [rolls]
+                 (cond
+                   (= rolls [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   0
+                   (= rolls [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+                   20
+                   :else
+                   16)))
+
+
+(defcoursetest my-test-16
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-a-game-starting-with-a-strike]
+               (defn score [rolls]
+                 (cond
+                   (= rolls [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   0
+                   (= rolls [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+                   20
+                   (= rolls [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   16
+                   :else
+                   24)))
+
+
+(defcoursetest my-test-17
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-a-perfect-game]
+               (defn score [rolls]
+                 (cond
+                   (= rolls [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   0
+                   (= rolls [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+                   20
+                   (= rolls [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   16
+                   (= rolls [10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   24
+                   :else
+                   300)))
+
+
+(defcoursetest my-test-18
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-an-all-spares-game]
+               (defn score [rolls]
+                 (cond
+                   (= rolls [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   0
+                   (= rolls [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+                   20
+                   (= rolls [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   16
+                   (= rolls [10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   24
+                   (= rolls [5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 10])
+                   155
+                   :else
+                   300)))
+
+
+(defcoursetest my-test-19
+               [ch-katas sub-ch-popular subj-bowling-game ins-bowling-game sub-ins-an-game-with-a-strike]
+               (defn score [rolls]
+                 (cond
+                   (= rolls [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   0
+                   (= rolls [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+                   20
+                   (= rolls [5 5 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   16
+                   (= rolls [10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   24
+                   (= rolls [5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 10])
+                   155
+                   (= rolls [0 0 10 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+                   24
+                   :else
+                   300)))
 
