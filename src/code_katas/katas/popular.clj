@@ -79,7 +79,77 @@
                                                         (is (= (fizzbuzz 4) "4") :default :advanced)
                                                         (is (= (fizzbuzz 7) "7") :default :advanced)
                                                         (is (= (fizzbuzz 8) "8") :default :advanced)
-                                                        (is (= (fizzbuzz 11) "11") :default :advanced)))))))
+                                                        (is (= (fizzbuzz 11) "11") :default :advanced)))))
+
+
+               (subject 'sb-prime-factors
+                        "Prime Factors"
+
+                        (learn
+                          (text
+                            (p (bold "Prime Factors: ") "prime numbers that divide an integer without remainder.")
+                            (p "e.g. " (hi "2 = 2, 4 = 2 * 2, 24 = 2 * 2 * 2 * 3") " and so on.")))
+
+                        (instruction 'ins-prime-factors
+                                     (run-pre-tests? true)
+                                     (initial-code "(ns prime-factors-kata)\n\n\n(defn prime-factors\n  [n]\n  )")
+                                     (rule :no-rule? true)
+
+                                     (sub-instruction 'sub-ins-prime-factors-2
+                                                      (text
+                                                        (code (= (prime-factors 2) [2])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 2) [2]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-3
+                                                      (text
+                                                        (code (= (prime-factors 3) [3])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 3) [3]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-4
+                                                      (text
+                                                        (code (= (prime-factors 4) [2 2])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 4) [2 2]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-6
+                                                      (text
+                                                        (code (= (prime-factors 6) [2 3])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 6) [2 3]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-8
+                                                      (text
+                                                        (code (= (prime-factors 8) [2 2 2])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 8) [2 2 2]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-9
+                                                      (text
+                                                        (code (= (prime-factors 9) [3 3])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 9) [3 3]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-10
+                                                      (text
+                                                        (code (= (prime-factors 10) [2 5])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 10) [2 5]) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-prime-factors-60
+                                                      (text
+                                                        (code (= (prime-factors 60) [2 2 3 5])))
+
+                                                      (testing
+                                                        (is (= (prime-factors 60) [2 2 3 5]) :default :advanced)))))))
 
 
 (defcoursetest my-test-1
@@ -114,3 +184,100 @@
                      [false true]  "buzz"
                      [true true]   "fizzbuzz"
                      [false false] (str x)} v))))
+
+(defcoursetest my-test-5
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-2]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-6
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-3]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-7
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-4]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-8
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-6]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-9
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-8]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-10
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-9]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-11
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-10]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
+(defcoursetest my-test-12
+               [ch-katas sub-ch-popular sb-prime-factors ins-prime-factors sub-ins-prime-factors-60]
+               (defn generate-with-candidate [x candidate]
+                 (if (= x candidate)
+                   [candidate]
+                   (if (= 0 (rem x candidate))
+                     (concat [candidate] (generate-with-candidate (/ x candidate) candidate))
+                     (generate-with-candidate x (+ candidate 1)))))
+
+               (defn prime-factors [x]
+                 (generate-with-candidate x 2)))
+
