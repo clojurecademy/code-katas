@@ -157,9 +157,9 @@
 
                         (learn
                           (text
-                            (p "The game consists of 10 frames. In each frame the player has two opportunities to knock down 10 pins. The score for the frame is the total number of pins knocked down, plus bonuses for strikes and spares.")
+                            (p "The game consists of " (bold "10") " frames. In each frame the player has " (bold "2") " opportunities to knock down 10 pins. The score for the frame is the total number of pins knocked down, plus bonuses for strikes and spares.")
 
-                            (p "A spare is when the player knocks down all 10 pins in two tries. The bonus for that frame is the number of pins knocked down by the next roll. ‘/’ denote a spare in the score sheet. A strike is when the player knocks down all 10 pins on his first try. The bonus for that frame is the value of the next two balls rolled. ‘X’ denote a striker in the score sheet.")
+                            (p "A spare is when the player knocks down all 10 pins in two tries. The bonus for that frame is the number of pins knocked down by the next roll. A strike is when the player knocks down all 10 pins on his first try. The bonus for that frame is the value of the next two balls rolled.")
 
                             (p "In the tenth frame a player who rolls a spare or strike is allowed to roll the extra balls to complete the frame (so 3 balls can be rolled in tenth frame).")))
 
