@@ -12,6 +12,7 @@
 
                         (learn
                           (text
+                            (p "Lewis Carroll published a cipher known as " (link "The Alphabet Cipher" "https://en.wikipedia.org/wiki/The_Alphabet_Cipher"))
                             (p "This Alphabet Cipher involves alphabet substitution using a keyword.")
                             (p "First you must make a substitution chart like this, where each row of the alphabet is rotated by one as each letter goes down the chart.")
                             (code ";   ABCDEFGHIJKLMNOPQRSTUVWXYZ\n; A abcdefghijklmnopqrstuvwxyz\n; B bcdefghijklmnopqrstuvwxyza\n; C cdefghijklmnopqrstuvwxyzab\n; D defghijklmnopqrstuvwxyzabc\n; E efghijklmnopqrstuvwxyzabcd\n; F fghijklmnopqrstuvwxyzabcde\n; G ghijklmnopqrstuvwxyzabcdef\n; H hijklmnopqrstuvwxyzabcdefg\n; I ijklmnopqrstuvwxyzabcdefgh\n; J jklmnopqrstuvwxyzabcdefghi\n; K klmnopqrstuvwxyzabcdefghij\n; L lmnopqrstuvwxyzabcdefghijk\n; M mnopqrstuvwxyzabcdefghijkl\n; N nopqrstuvwxyzabcdefghijklm\n; O opqrstuvwxyzabcdefghijklmn\n; P pqrstuvwxyzabcdefghijklmno\n; Q qrstuvwxyzabcdefghijklmnop\n; R rstuvwxyzabcdefghijklmnopq\n; S stuvwxyzabcdefghijklmnopqr\n; T tuvwxyzabcdefghijklmnopqrs\n; U uvwxyzabcdefghijklmnopqrst\n; V vwxyzabcdefghijklmnopqrstu\n; W wxyzabcdefghijklmnopqrstuv\n; X xyzabcdefghijklmnopqrstuvw\n; Y yzabcdefghijklmnopqrstuvwx\n; Z zabcdefghijklmnopqrstuvwxy")
@@ -68,7 +69,97 @@
                                                                (decipher "opkyfipmfmwcvqoklyhxywgeecpvhelzg" "thequickbrownfoxjumpsoveralazydog"))
                                                             :default :advanced)
                                                         (is (= "scones"
-                                                               (decipher "hcqxqqtqljmlzhwiivgbsapaiwcenmyu" "packmyboxwithfivedozenliquorjugs")) :default :advanced)))))))
+                                                               (decipher "hcqxqqtqljmlzhwiivgbsapaiwcenmyu" "packmyboxwithfivedozenliquorjugs")) :default :advanced)))))
+
+
+               (subject 'subj-card-game-war
+                        "Card Game War"
+
+                        (learn
+                          (text
+                            (p "This kata is a version of the classic card game " (link "War" "https://en.wikipedia.org/wiki/War_%28card_game%29") ".")
+                            (p "The rules of this card game are quite simple.")
+                            (p "There are " (bold "two") " players.")
+                            (p "The cards are all dealt equally to each player.")
+                            (p "Each round, player 1 lays a card down face up at the same time that player 2 lays a card down face up. Whoever has the highest value card, wins both round and takes both cards.")
+                            (p "The winning cards are added to the bottom of the winners deck.")
+                            (p "Aces are high.")
+                            (p "If both cards are of equal value, then the winner is decided upon by the highest suit. The suits ranks in order of ascending value are spades, clubs, diamonds, and hearts.")
+                            (p "The player that runs out of cards loses.")))
+
+                        (instruction 'ins-card-game-war
+                                     (run-pre-tests? true)
+                                     (initial-code "(ns card-game-war.game)\n\n(def suits [:spade :club :diamond :heart])\n(def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])\n(def cards\n  (for [suit suits\n        rank ranks]\n    [suit rank]))\n\n\n(defn play-round \n  [player1-card player2-card]\n  ;;fill me\n  )\n\n\n(defn play-game \n  [player1-cards player2-cards]\n  ;;fill me\n  )")
+                                     (rule :no-rule? true)
+
+                                     (sub-instruction 'sub-ins-highest-rank
+                                                      (text
+                                                        (p "The highest rank wins the cards in the round.")
+                                                        (code "(= [[[:spade 4] [:spade 2]] []]\n   (play-round [:spade 4] [:spade 2]))")
+                                                        (code "(= [[] [[:spade 4] [:spade 2]]]\n   (play-round [:spade 2] [:spade 4]))"))
+
+                                                      (testing
+                                                        (is (= [[[:spade 4] [:spade 2]] []] (play-round [:spade 4] [:spade 2])) :default :advanced)
+                                                        (is (= [[] [[:spade 4] [:spade 2]]] (play-round [:spade 2] [:spade 4])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-queens-are-higher
+                                                      (text
+                                                        (p "Queens are higher rank than jacks.")
+                                                        (code "(= [[[:spade :queen] [:spade :jack]] []]\n   (play-round [:spade :queen] [:spade :jack]))"))
+
+                                                      (testing
+                                                        (is (= [[[:spade :queen] [:spade :jack]] []] (play-round [:spade :queen] [:spade :jack])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-kings-are-higher
+                                                      (text
+                                                        (p "Kings are higer rank than queens.")
+                                                        (code "(= [[[:spade :king] [:spade :queen]] []]\n   (play-round [:spade :king] [:spade :queen]))"))
+
+                                                      (testing
+                                                        (is (= [[[:spade :king] [:spade :queen]] []] (play-round [:spade :king] [:spade :queen])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-aces-are-higher
+                                                      (text
+                                                        (p "Aces are higer rank than kings.")
+                                                        (code "(= [[[:spade :ace] [:spade :king]] []]\n   (play-round [:spade :ace] [:spade :king]))"))
+
+                                                      (testing
+                                                        (is (= [[[:spade :ace] [:spade :king]] []] (play-round [:spade :ace] [:spade :king])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-clubs-beats-pades
+                                                      (text
+                                                        (p "If the ranks are equal, clubs beat spades.")
+                                                        (code "(= [[[:club 2] [:spade 2]] []]\n   (play-round [:club 2] [:spade 2]))"))
+
+                                                      (testing
+                                                        (is (= [[[:club 2] [:spade 2]] []] (play-round [:club 2] [:spade 2])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-diamonds-beat-clubs
+                                                      (text
+                                                        (p "If the ranks are equal, diamonds beat clubs.")
+                                                        (code "(= [[[:diamond 2] [:club 2]] []]\n   (play-round [:diamond 2] [:club 2]))"))
+
+                                                      (testing
+                                                        (is (= [[[:club 2] [:spade 2]] []] (play-round [:club 2] [:spade 2])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-hearts-beat-diamonds
+                                                      (text
+                                                        (p "If the ranks are equal, hearts beat diamonds.")
+                                                        (code "(= [[[:heart 2] [:diamond 2]] []]\n   (play-round [:heart 2] [:diamond 2]))"))
+
+                                                      (testing
+                                                        (is (= [[[:heart 2] [:diamond 2]] []] (play-round [:heart 2] [:diamond 2])) :default :advanced)))
+
+                                     (sub-instruction 'sub-ins-player-loses
+                                                      (text
+                                                        (p "The player loses when they run out of cards.")
+                                                        (code "(let [win-start  [[:heart 10]]\n      lose-start [[:heart 9]]]\n  (= :player1 (play-game win-start lose-start))\n  (= :player2 (play-game lose-start win-start)))"))
+
+                                                      (testing
+                                                        (is (= :player1 (play-game [[:heart 10]] [[:heart 9]])) :default :advanced)
+                                                        (is (= :player2 (play-game [[:heart 9]] [[:heart 10]])) :default :advanced)))
+
+                                     ))))
 
 (defcoursetest my-wonderful-test-1
                [ch-katas sub-ch-wonderland sbj-alphabet-cipher ins-alphabet-cipher sub-ins-encode]
@@ -163,3 +254,181 @@
                        (check keystr h) h
                        (empty? t) :not-found
                        :else (recur (first t) (rest t)))))))
+
+
+(defcoursetest my-wonderful-test-4
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-highest-rank]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-5
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-queens-are-higher]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-6
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-kings-are-higher]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-7
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-aces-are-higher]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-8
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-clubs-beats-pades]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-9
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-diamonds-beat-clubs]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-10
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-hearts-beat-diamonds]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]])))
+
+
+(defcoursetest my-wonderful-test-11
+               [ch-katas sub-ch-wonderland subj-card-game-war ins-card-game-war sub-ins-player-loses]
+               (def suits [:spade :club :diamond :heart])
+               (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+               (def cards
+                 (for [suit suits
+                       rank ranks]
+                   [suit rank]))
+
+               (defn keyfn [[suit rank]]
+                 (+
+                   (* 100 (.indexOf ranks rank))
+                   (.indexOf suits suit)))
+
+               (defn play-round [player1-card player2-card]
+                 (if (> (keyfn player1-card) (keyfn player2-card))
+                   [[player1-card player2-card] []]
+                   [[] [player2-card player1-card]]))
+
+               (defn next-step [[player1-cards player2-cards]]
+                 (if (or (empty? player1-cards) (empty? player2-cards))
+                   nil
+                   (let [[player1-result player2-result]
+                         (play-round (first player1-cards) (first player2-cards))]
+                     [(concat (rest player1-cards) player1-result)
+                      (concat (rest player2-cards) player2-result)])))
+
+               (defn play-game [player1-cards player2-cards]
+                 (let [game-steps (take-while identity (iterate next-step [player1-cards player2-cards]))
+                       end-state  (last game-steps)
+                       [player1-end player2-end] end-state]
+                   (cond (not (empty? player1-end)) :player1
+                         (not (empty? player2-end)) :player2
+                         :else :draw))))
+
+
